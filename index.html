@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Video Studio</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:white;font-family:Arial,sans-serif;padding:20px}
+header{display:flex;align-items:center;gap:12px;margin-bottom:25px}
+.logo{background:linear-gradient(135deg,#8b5cf6,#06b6d4);padding:13px;border-radius:15px;font-size:25px}
+h1{font-size:22px;margin:0}
+.sub{color:#9ca3af;font-size:12px;margin-top:5px}
+h2{font-size:17px;margin:24px 0 12px}
+.card{background:#151d32;border:1px solid #29344d;padding:17px;border-radius:16px;margin-bottom:16px}
+textarea{width:100%;height:110px;background:#0b1020;color:white;border:1px solid #35415c;border-radius:12px;padding:13px;font-size:15px;resize:vertical}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.option{padding:15px 8px;background:#0b1020;border:1px solid #35415c;color:white;border-radius:12px;text-align:center;font-size:14px}
+.option.active{border:2px solid #9b72ff;background:#292044}
+button{cursor:pointer}
+select{width:100%;padding:13px;background:#0b1020;color:white;border:1px solid #35415c;border-radius:10px;font-size:15px}
+.generate{width:100%;padding:16px;background:linear-gradient(90deg,#8b5cf6,#06b6d4);border:0;border-radius:12px;color:white;font-size:17px;font-weight:bold;margin-top:15px}
+#status{color:#a78bfa;text-align:center;margin-top:15px}
+.preview{height:170px;background:#0b1020;border:1px dashed #53617b;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#9ca3af;text-align:center;padding:15px}
+footer{text-align:center;color:#64748b;font-size:12px;margin-top:30px}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">🎬</div>
+<div>
+<h1>AI Video Studio</h1>
+<div class="sub">Create videos with AI</div>
+</div>
+</header>
+
+<div class="card">
+<h2>✍️ Video Prompt</h2>
+<textarea id="prompt" placeholder="Describe your video... Example: A beautiful village with green trees and a river."></textarea>
+</div>
+
+<div class="card">
+<h2>🎥 Video Type</h2>
+<div class="options">
+<button class="option active" onclick="choose(this,'type','Text to Video')">✍️ Text to Video</button>
+<button class="option" onclick="choose(this,'type','Image to Video')">🖼️ Image to Video</button>
+</div>
+<div id="upload" style="display:none;margin-top:15px">
+<input type="file" id="imageFile" accept="image/*">
+</div>
+</div>
+
+<div class="card">
+<h2>🎨 Video Style</h2>
+<div class="options">
+<button class="option active" onclick="choose(this,'style','3D Cartoon')">🎭 3D Cartoon</button>
+<button class="option" onclick="choose(this,'style','Realistic')">📸 Realistic</button>
+</div>
+</div>
+
+<div class="card">
+<h2>⏱️ Video Duration</h2>
+<select id="duration">
+<option value="5 seconds">5 Seconds</option>
+<option value="10 seconds">10 Seconds</option>
+<option value="15 seconds">15 Seconds</option>
+<option value="30 seconds">30 Seconds</option>
+</select>
+
+<h2>📱 Video Quality</h2>
+<select id="quality">
+<option>720p</option>
+<option>1080p</option>
+</select>
+</div>
+
+<button class="generate" onclick="generateVideo()">✨ Generate Video</button>
+<div id="status"></div>
+
+<h2>🎞️ Video Preview</h2>
+<div class="preview" id="preview">Your generated video will appear here.</div>
+
+<footer>AI Video Studio © 2026</footer>
+
+<script>
+let videoType="Text to Video";
+let videoStyle="3D Cartoon";
+
+function choose(btn,key,value){
+let parent=btn.parentElement;
+parent.querySelectorAll(".option").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
+if(key==="type"){
+videoType=value;
+document.getElementById("upload").style.display=
+value==="Image to Video"?"block":"none";
+}else{
+videoStyle=value;
+}
+}
+
+function generateVideo(){
+let prompt=document.getElementById("prompt").value.trim();
+let status=document.getElementById("status");
+if(!prompt){
+status.textContent="Please enter your video prompt.";
+return;
+}
+if(videoType==="Image to Video" &&
+!document.getElementById("imageFile").files.length){
+status.textContent="Please select an image first.";
+return;
+}
+status.textContent="Your video settings are ready! AI generation service is not connected yet.";
+document.getElementById("preview").textContent=
+"Prompt: "+prompt+" | Style: "+videoStyle+
+" | Type: "+videoType+
+" | Duration: "+document.getElementById("duration").value;
+}
+</script>
+</body>
+</html>
